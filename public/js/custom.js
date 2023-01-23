@@ -99,10 +99,24 @@ MVL.zipcodes = {
             e.preventDefault();
             var data = $(MVL.zipcodes.container).serializeArray();
 
-            // var data = [];
-            // items.map( function(k,v){
-            //     data.push({name:v.name,value:v.value});
-            // } );
+            var refresh = $.ajax({
+                url: '/shipping',
+                type: 'POST',
+                data: data,
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
+            refresh.done( function( res ){
+                console.log( "done: ", res );
+                MVL.loading('hide');
+            } );
+            refresh.fail( function( res ){
+                console.log( "fail: ", res );
+                MVL.loading('hide');
+            } );
+
             console.log(data);
         });
     },

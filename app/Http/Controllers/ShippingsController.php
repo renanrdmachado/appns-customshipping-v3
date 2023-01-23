@@ -23,4 +23,26 @@ class ShippingsController extends Controller
         // dd( $req );
         return AppShipping::AppShippingOptionResponse($req);
     }
+    public static function save(Request $data) {
+        $req = $data->all();
+
+        if (!$req)
+            return false;
+
+        $inputs = [];
+        foreach( $req as $k=>$v ) {
+            foreach( $v as $k2=>$v2 ) {
+                $inputs[$k2][$k] = $v2;
+            }
+        }
+
+        if (!$inputs)
+            return false;
+
+        
+
+        $upsert = AppShipping::AppShippingSave($inputs);
+
+        dd( $upsert );
+    }
 }

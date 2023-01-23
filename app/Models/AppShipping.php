@@ -14,9 +14,16 @@ class AppShipping extends Model
 {
     use HasFactory;
     
-    public static function AppShippingSave(){
+    public static function AppShippingSave( $inputs ){
+        $data = array(
+            'store_id'  => Auth::user()->store_id,
+            'shipping_data' => json_encode($inputs)
+        );
+        // dd( $data );
 
-
+        $upsert = DB::table('shipping')
+            ->upsert($data, ['store_id'],['shipping_data']);
+        return $upsert;
     }
     public static function AppShippingOptionsUpsert( $data ){
         $upsert = DB::table('shipping')

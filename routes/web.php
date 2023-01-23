@@ -38,6 +38,7 @@ Route::get('/account/subscriptions/refresh', [SubscriptionsController::class, 'S
 
 // Shipping
 Route::get('/shipping', [ShippingsController::class, 'index'])->middleware(['auth'])->name('shipping');
+Route::post('/shipping', [ShippingsController::class, 'save'])->middleware(['auth'])->name('shipping');
 Route::get('/shipping/{id}', [ShippingsController::class, 'single'])->middleware(['auth'])->name('shipping.single');
 Route::post('/shipping/response', [ShippingsController::class, 'find']);
 require __DIR__.'/auth.php';
