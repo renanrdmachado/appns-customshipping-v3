@@ -1,0 +1,21 @@
+a {color:#2568bf;transition:.3s;}
+a:hover {color:#000;}
+
+body { transition:.3s; }
+body.loading { opacity:0.4; }
+
+.vertical-menu > li > a { padding: 10px 20px; display: block; border-radius: 99px; color:#000;}
+.vertical-menu > li > a:hover,
+.vertical-menu > li.active > a { background-color:rgba(0,0,0,.05); }
+
+.collapse-group {margin:20px auto}
+.collapse-group .collapse-header {font-weight:600;padding:15px 25px;border:1px solid #000;}
+.collapse-group.active .collapse-header {}
+.collapse-group .collapse-body {padding:15px 25px;border-left:1px solid #000;border-bottom:1px solid #000;border-right:1px solid #000;}
+.collapse-group.active .collapse-body {}
+
+.btn { background-color: #fff; border-color: #6b7280; border-width: 1px; border-radius: 0px; padding-top: 0.5rem; padding-right: 0.75rem; padding-bottom: 0.5rem; padding-left: 0.75rem; font-size: 1rem; line-height: 1.5rem; transition:.3s ease-in-out;}
+.btn:hover {opacity:.8;}
+.btn.btn-primary { background-color: #000; border-color:#000;color:#fff;}
+
+.text-right {text-align:right;}
