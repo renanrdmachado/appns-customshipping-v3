@@ -75,6 +75,7 @@ class SubscriptionsController extends Controller
     }
 
     public static function SubscriptionsRefresh(){
-        return AsaasSubscriptions::AsaasSubscriptionsRefresh(true);
+        $store = Auth::user()->store_id;
+        return AsaasSubscriptions::AsaasSubscriptionsRefresh(true,$store);
     }
 }

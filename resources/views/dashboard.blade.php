@@ -9,7 +9,19 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 bg-white border-b border-gray-200">
-                    You're logged in!
+
+                    @if(!$store)
+                        <x-alert-store></x-alert-store>
+                    @else
+                        <x-alert-store><i class="fa-regular fa-circle-check text-green-600"></i> Integrado com sua loja Nuvemshop</x-alert-store>
+                    @endif
+
+                    @if(!$subscription)
+                        <x-alert-subscription></x-alert-subscription>
+                    @else
+                        <x-alert-subscription><i class="fa-regular fa-circle-check text-green-600"></i> Tudo certo com sua assinatura</x-alert-subscription>
+                    @endif
+
                 </div>
             </div>
         </div>

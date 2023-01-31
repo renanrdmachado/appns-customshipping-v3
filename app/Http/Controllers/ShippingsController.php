@@ -4,12 +4,20 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\AppShipping;
+use Illuminate\Support\Facades\Auth;
+use App\Models\NsShipping;
 
 class ShippingsController extends Controller
 {
     //
     public static function index() {
-        return view('pages/shipping/index');
+
+        // dd( NsShipping::NsShippingCarrierInit() );
+
+
+        $store_id = Auth::user()->store_id;
+        $shipping_data = AppShipping::AppShippingOptionsGet();
+        return view('pages/shipping/index',['shippings'=> $shipping_data,'store'=>$store_id]);
     }
     public static function single( $id ) {
         return view('pages/shipping/single',['id'=> $id]);
@@ -40,9 +48,8 @@ class ShippingsController extends Controller
             return false;
 
         
-
         $upsert = AppShipping::AppShippingSave($inputs);
 
-        dd( $upsert );
+        return $upsert;
     }
 }

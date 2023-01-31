@@ -21,12 +21,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth'])->name('dashboard');
-
 // Authentication
 Route::get('/install', [BasicController::class, 'install']);
+Route::get('/dashboard', [BasicController::class, 'dashboard'])->middleware(['auth'])->name('dashboard');
 Route::get('/account/password', function () { return view('pages/account/password'); })->middleware(['auth'])->name('pass');
 Route::post('/account/password', [AccountController::class, 'AccountPasswordUpdate'])->middleware(['auth'])->name('pass.update');
 

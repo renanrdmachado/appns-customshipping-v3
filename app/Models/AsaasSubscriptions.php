@@ -103,6 +103,9 @@ class AsaasSubscriptions extends Model
             return false;
         }
 
+        if (!$store)
+            return;
+
         $refresh = false;
         if ($force || Carbon::now()->toDateString() >= $store->subscription_nextDate ) {
             $refresh = true;

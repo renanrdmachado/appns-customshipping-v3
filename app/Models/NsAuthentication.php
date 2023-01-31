@@ -64,19 +64,20 @@ class NsAuthentication extends Model
             ]);
     
             Auth::login($user);
-
-            $userUpdate = DB::table('users')
-                ->where('id', Auth::user()->id)
-                ->update(['store_id'=>$storeGet['id']]);
-
-            if (!$userUpdate){   
-                echo "NsAuthentication: Erro no AppStore::userUpdate()!<br/>";
-                return false;
-            }
-    
-            // return true;
-
         }
+
+        $userUpdate = DB::table('users')
+            ->where('id', Auth::user()->id)
+            ->update(['store_id'=>$storeGet['id']]);
+
+        if (!$userUpdate){   
+            echo "NsAuthentication: Erro no AppStore::userUpdate()!<br/>";
+            return false;
+        }
+
+        // return true;
+
+        
 
 
         return true;

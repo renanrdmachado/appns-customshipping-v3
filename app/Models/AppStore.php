@@ -62,7 +62,23 @@ class AppStore extends Model
 
     }
 
-    public static function AppStoreStatusGet(){
+    public static function AppStoreStatusGet($store_id=false){
+        if( !$store_id && Auth::check() ) {
+            $store_id = Auth::user()->store_id;
+        }
+
+        if (!$store_id)
+            return false;
+
+        $status = DB::table('stores')
+            ->where('store_id', $store_id)
+            ->get(['subscription_status'])
+            ->first();
+
+        if (!$status)
+            return false;
+
+        return $status->subscription_status;
     }
     
 }

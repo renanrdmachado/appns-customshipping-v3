@@ -87,38 +87,52 @@ MVL.zipcodes = {
     class: '.zipcodes-range-item',
     btn: '.js-save',
     save: function (data){
+        MVL.loading('show');
+        var data = $(data).serializeArray();
+        console.log(data);
+        var refresh = $.ajax({
+            url: '/shipping',
+            type: 'POST',
+            data: data,
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
+        refresh.done( function( res ){
+            console.log( "done: ", res );
+            MVL.loading('hide');
+        } );
+        refresh.fail( function( res ){
+            console.log( "fail: ", res );
+            MVL.loading('hide');
+        } );
 
     },
     remove: function (data) {
+        
+        $(data).closest('tr').hide(200);
+        setTimeout(function(){
+            data.closest('tr').remove();
+        },200);
+    },
+    addLine: function(e){
+        var clone = $('.zipcodes-range-item.hidden').first().clone();
 
+        clone.find('input').removeAttr('disabled');
+        clone.removeClass('hidden');
+
+        var cloned = $('.js-zipcode-table-new').closest('tr').first().before( clone );
+        cloned.show(200);
     },
     handle: function(){
         var container = $(this.container);
         container.find('.js-save').unbind('click');
         container.find('.js-save').bind('click',function(e){
             e.preventDefault();
-            var data = $(MVL.zipcodes.container).serializeArray();
-
-            var refresh = $.ajax({
-                url: '/shipping',
-                type: 'POST',
-                data: data,
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
-
-            refresh.done( function( res ){
-                console.log( "done: ", res );
-                MVL.loading('hide');
-            } );
-            refresh.fail( function( res ){
-                console.log( "fail: ", res );
-                MVL.loading('hide');
-            } );
-
-            console.log(data);
+            MVL.zipcodes.save(MVL.zipcodes.container);
         });
+
     },
     init: function(){
         this.handle();
