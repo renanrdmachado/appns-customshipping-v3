@@ -68,4 +68,25 @@ class AppAccount extends Model
 
         return $store->subscription_status;
     }
+
+    public static function AppAccountDelete() {
+
+        if( ! Auth::check() )
+            return;
+        $store_id = Auth::user()->store_id;
+
+        DB::table('shipping')
+        ->where('store_id',$store_id)
+        ->delete();
+
+        DB::table('stores')
+        ->where('store_id',$store_id)
+        ->delete();
+
+        DB::table('users')
+        ->where('store_id',$store_id)
+        ->delete();
+
+        return true;
+    }
 }

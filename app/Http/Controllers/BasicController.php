@@ -17,7 +17,7 @@ class BasicController extends Controller
 
         $authentication = NsAuthentication::NsAuthentication( $_GET['code'] );
 
-        $shippingcarrier = NsShipping::NsShippingCarrierInit();
+        $shippingcarrier = NsShipping::NsShippingCarrierInit($authentication);
         
         if( !$authentication ) 
             return view( 'pages/errors/installation' );
@@ -29,9 +29,9 @@ class BasicController extends Controller
     public static function dashboard(){
         $store_id = Auth::user()->store_id;
         $subscription = AppAccount::AppAccountSubscriptionStatus();
-        if($subscription=="START"){
+        if($subscription!="RECEIVED"){
             $subscription = false;
-        }
+        }   
         return view('dashboard',['store'=>$store_id,'subscription'=>$subscription]);
     }
 }

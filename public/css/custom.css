@@ -19,3 +19,6 @@ body.loading { opacity:0.4; }
 .btn.btn-primary { background-color: #000; border-color:#000;color:#fff;}
 
 .text-right {text-align:right;}
+
+.zipcodes-range-item.new input[type="text"],
+.zipcodes-range-item.new input[type="number"] {background-color:#ffffd5;}

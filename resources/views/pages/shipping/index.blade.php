@@ -38,8 +38,8 @@
                                 @foreach( $shippings as $shipping )
                                     <tr class="zipcodes-range-item">
                                         <td><input type="text" name="name[]" placeholder="Nome" class="w-full border-gray-100" value="{{ $shipping->name }}"></td>
-                                        <td><input type="text" name="from[]" placeholder="de" class="w-full border-gray-100" value="{{ $shipping->from }}"></td>
-                                        <td><input type="text" name="to[]" placeholder="até" class="w-full border-gray-100" value="{{ $shipping->to }}"></td>
+                                        <td><input type="text" name="from[]" minlength="8" maxlength="8" placeholder="de" class="w-full border-gray-100" value="{{ $shipping->from }}"></td>
+                                        <td><input type="text" name="to[]" minlength="8" maxlength="8" placeholder="até" class="w-full border-gray-100" value="{{ $shipping->to }}"></td>
                                         <td><input type="number" name="min_days[]" placeholder="Min" min="0" class="w-full border-gray-100" value="{{ $shipping->min_days }}"></td>
                                         <td><input type="number" name="max_days[]" placeholder="Max" min="0" class="w-full border-gray-100" value="{{ $shipping->max_days }}"></td>
                                         <td><input type="text" name="price[]" placeholder="Preço" class="w-full border-gray-100" value="{{ $shipping->price }}"></td>
@@ -61,10 +61,10 @@
                                 </td>
                             </tr>
 
-                            <tr class="zipcodes-range-item hidden">
+                            <tr class="zipcodes-range-item new hidden">
                                 <td><input type="text" name="name[]" placeholder="Nome" class="w-full border-gray-100" disabled></td>
-                                <td><input type="text" name="from[]" placeholder="de" class="w-full border-gray-100" disabled></td>
-                                <td><input type="text" name="to[]" placeholder="até" class="w-full border-gray-100" disabled></td>
+                                <td><input type="text" name="from[]" minlength="8" maxlength="8" placeholder="de" class="w-full border-gray-100" disabled></td>
+                                <td><input type="text" name="to[]"  minlength="8" maxlength="8" placeholder="até" class="w-full border-gray-100" disabled></td>
                                 <td><input type="number" name="min_days[]" placeholder="Min" min="0" class="w-full border-gray-100" disabled></td>
                                 <td><input type="number" name="max_days[]" placeholder="Max" min="0" class="w-full border-gray-100" disabled></td>
                                 <td><input type="text" name="price[]" placeholder="Preço" class="w-full border-gray-100" disabled></td>

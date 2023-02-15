@@ -36,7 +36,7 @@ class AppStore extends Model
         // {"access_token":"4580f098bd84d3c196ae054c600b78cfcc16a11c","token_type":"bearer","scope":"read_content,write_content,read_shipping,write_shipping,read_discounts,write_discounts,write_scripts,read_locations,write_locations","user_id":1983889}
         $update = DB::table('stores')
             ->upsert($data, ['store_id']);
-            
+        
         if( !$update ) {
             echo "Erro AppStore AppStoreUpdate()";
             return false;

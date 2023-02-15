@@ -64,13 +64,14 @@ class AppShipping extends Model
     }
 
     public static function AppShippingOptionResponse( $find ) {
-
         AsaasSubscriptions::AsaasSubscriptionsRefresh( 0, $find["store_id"] );
 
         $status = AppStore::AppStoreStatusGet($find["store_id"]);
 
-        if ($status != "RECEIVED")
+        if ($status != "RECEIVED") {
+            echo json_encode( ["status"=> $status] );
             return;
+        }
 
         $inputs = array(
             'store_id' => $find["store_id"],
@@ -98,35 +99,36 @@ class AppShipping extends Model
             return false;
 
         foreach($res as $key=>$fd) {
-
-            if (!$fd->active)
-                return;
-
-            $min = $fd->min_days;
-            $max = $fd->max_days;
-
             
-            $min_delivery_date = Carbon::now()->addDays($min)->toIso8601String();
-            $max_delivery_date = Carbon::now()->addDays($max)->toIso8601String();
+            if (isset($fd->active) && $fd->active=="on") {
+                $min = $fd->min_days;
+                $max = $fd->max_days;
+    
+                
+                $min_delivery_date = Carbon::now()->addDays($min)->toIso8601String();
+                $max_delivery_date = Carbon::now()->addDays($max)->toIso8601String();
+    
+                $fd->price = str_replace(",", ".", $fd->price);
+    
+                //var_dump($data);
+    
+                $newkey = $key + 1;
+                $rates["rates"][] = array(
+                    "name"=> $fd->name,
+                    "code"=> 'fretefixo'.$newkey,
+                    "price"=> floatval(number_format($fd->price,2,".","") ),
+                    // "price"=> $fd->price,
+                    "price_merchant"=> 0,
+                    "currency"=> "BRL",
+                    "type"=> "ship",
+                    "min_delivery_date"=> $min_delivery_date,
+                    "max_delivery_date"=> $max_delivery_date,
+                    "reference"=> Str::slug($fd->name,'-')
+                );
+                $newkey=false;
+            }
 
-            $fd->price = str_replace(",", ".", $fd->price);
-
-            //var_dump($data);
-
-            $newkey = $key + 1;
-            $rates["rates"][] = array(
-                "name"=> $fd->name,
-                "code"=> 'fretefixo'.$newkey,
-                "price"=> floatval(number_format($fd->price,2,".","") ),
-                // "price"=> $fd->price,
-                "price_merchant"=> 0,
-                "currency"=> "BRL",
-                "type"=> "ship",
-                "min_delivery_date"=> $min_delivery_date,
-                "max_delivery_date"=> $max_delivery_date,
-                "reference"=> Str::slug($fd->name,'-')
-            );
-            $newkey=false;
+           
             
         }
     

@@ -15,7 +15,9 @@
                 <div class="col-md-9">
                     <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                         <div class="p-6 bg-white border-b border-gray-200">
-                            Página em construção!
+                            <div>
+                                <a href="#" class="js-cancel-account text-red-600 underline text-sm">Cancelar conta</a>
+                            </div>
                         </div>
                     </div>
                 </div>

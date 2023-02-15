@@ -63,12 +63,31 @@
                                 </div>
                                 @if( isset($store->subscription_data) )
                                 <div class=" mb-4">
-                                    <p>Última atualização: <span class="js-subscriptionLastVerification">{{ $store->updated_at }}</span></p>
+                                    <p>Última atualização: <span class="js-subscriptionLastVerification">{{ $store->updated_at ?? "yyyy/mm/dd" }}</span></p>
                                     @php
                                         $subscription_data = json_decode($store->subscription_data);
                                     @endphp
-                                    <p>Próximo pagamento: <span class="js-subscriptionNextDueDate">{{ $subscription_data->payments->dueDate }}</span></p>
+                                    @if( isset($subscription_data->payments) )
+                                    <p>Próximo pagamento: <span class="js-subscriptionNextDueDate">{{ $subscription_data->payments->dueDate  }}</span></p>
                                     <p>Link para pagamento: <a href="{{ $subscription_data->payments->invoiceUrl }}" target="_blank">{{ $subscription_data->payments->invoiceUrl }}</a></p>
+                                    @endif
+                                </div>
+                                @endif
+                            @endif
+
+                            @if($status=="RECEIVED")
+                                <div class="badge d-block mb-4">
+                                    <strong>Tudo certo!</strong>
+                                </div>
+                                @if( isset($store->subscription_data) )
+                                <div class=" mb-4">
+                                    <p>Última atualização: <span class="js-subscriptionLastVerification">{{ $store->updated_at ?? "yyyy/mm/dd" }}</span></p>
+                                    @php
+                                        $subscription_data = json_decode($store->subscription_data);
+                                    @endphp
+                                    @if( isset($subscription_data->payments) )
+                                    <p>Próximo pagamento: <span class="js-subscriptionNextDueDate">{{ $subscription_data->payments->dueDate  }}</span></p>
+                                    @endif
                                 </div>
                                 @endif
                             @endif

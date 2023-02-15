@@ -10,7 +10,7 @@ use App\Models\NsShipping;
 class ShippingsController extends Controller
 {
     //
-    public static function index() {
+    public static function index( ) {
 
         // dd( NsShipping::NsShippingCarrierInit() );
 

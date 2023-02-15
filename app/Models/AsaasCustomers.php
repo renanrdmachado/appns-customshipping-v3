@@ -40,11 +40,11 @@ class AsaasCustomers extends Model
             ])->get( $url);
         
         if (!$get) {
-            echo "AsaasCustomers::AsaasCustomerGet()!<br/>";
+            // echo "AsaasCustomers::AsaasCustomerGet()!<br/>";
             return false;
         }
         if ($get['totalCount']==0) {
-            echo "AsaasCustomers::AsaasCustomerGet()! totalCount<br/>";
+            // echo "AsaasCustomers::AsaasCustomerGet()! totalCount<br/>";
             return false;
         }
 

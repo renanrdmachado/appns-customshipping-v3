@@ -54,7 +54,6 @@ class NsAuthentication extends Model
 
         $accountGet = AppAccount::AppAccountGet( array('store_id' => $storeGet['id'] ) );
 
-
         if( !$accountGet ) {
             // echo "NsAuthentication: Erro no AppAccount::AppAccountGet()!<br/>";
             $user = User::create([
@@ -64,25 +63,17 @@ class NsAuthentication extends Model
             ]);
     
             Auth::login($user);
+        } else {
+            Auth::loginUsingId($accountGet->id);
         }
 
         $userUpdate = DB::table('users')
             ->where('id', Auth::user()->id)
             ->update(['store_id'=>$storeGet['id']]);
 
-        if (!$userUpdate){   
-            echo "NsAuthentication: Erro no AppStore::userUpdate()!<br/>";
-            return false;
-        }
-
         // return true;
 
-        
-
-
-        return true;
-
-         
+        return $storeGet['id'];
 
     }
 }

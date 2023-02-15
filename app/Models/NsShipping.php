@@ -12,14 +12,16 @@ class NsShipping extends Model
 {
     use HasFactory;
 
-    public static function NsShippingCarrierGet(){
+    public static function NsShippingCarrierGet( $store_id ){
 
         if (!Auth::check())
             return;
 
         $data = DB::table('stores')
-            ->where('store_id', Auth::user()->store_id)
+            ->where('store_id', $store_id)
             ->first();
+
+        // dd( Auth::user()->id );
 
         $auth_data = json_decode($data->auth_data);
 
@@ -44,13 +46,13 @@ class NsShipping extends Model
 
         return reset($find);
     }
-    public static function NsShippingCarrierCreate(){
+    public static function NsShippingCarrierCreate( $store_id ){
 
         if (!Auth::check())
             return;
 
         $data = DB::table('stores')
-            ->where('store_id', Auth::user()->store_id)
+            ->where('store_id', $store_id)
             ->first();
 
         $auth_data = json_decode($data->auth_data);
@@ -70,13 +72,13 @@ class NsShipping extends Model
 
         return $post;
     }
-    public static function NsShippingCarrierOptionsCreate( $carrier_id ){
+    public static function NsShippingCarrierOptionsCreate( $store_id, $carrier_id ){
 
         if (!Auth::check())
             return;
 
         $data = DB::table('stores')
-            ->where('store_id', Auth::user()->store_id)
+            ->where('store_id', $store_id)
             ->first();
 
         $auth_data = json_decode($data->auth_data);
@@ -96,18 +98,27 @@ class NsShipping extends Model
         return $post;
     }
 
-    public static function NsShippingCarrierInit() {
-        $get = NsShipping::NsShippingCarrierGet();
+    public static function NsShippingCarrierInit( $store_id ) {
+        $get = NsShipping::NsShippingCarrierGet( $store_id );
 
         if (!$get){
-            $create = NsShipping::NsShippingCarrierCreate();
+            $create = NsShipping::NsShippingCarrierCreate( $store_id );
             if (!$create)
                 return;
-            $createOptions = NsShipping::NsShippingCarrierOptionsCreate( $create['id'] );
+            $createOptions = NsShipping::NsShippingCarrierOptionsCreate( $store_id, $create['id'] );
             if (!$createOptions)
                 return;
             $get = $create->json();
         }
+
+        $data = [
+            'store_id' => $store_id,
+            'subscription_data'  => json_encode($get)
+        ];
+        $updateStore = DB::table('stores')
+            ->upsert($data, ['store_id'],['subscription_data']);
+
+        // dd($get);
 
         return $get;
     }

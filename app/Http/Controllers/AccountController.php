@@ -16,4 +16,11 @@ class AccountController extends Controller
         }
         return redirect('dashboard');
     }
+
+    public static function AccountDelete(){
+        $delete = AppAccount::AppAccountDelete();
+        if( $delete ){
+            return redirect('welcome');
+        }
+    }
 }

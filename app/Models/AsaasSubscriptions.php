@@ -118,6 +118,9 @@ class AsaasSubscriptions extends Model
             return false;
 
         $subscription_data = json_decode($store->subscription_data);
+        
+        if( !isset($subscription_data->subscription) )
+            return false;
 
         $subscriptionsGet = AsaasSubscriptions::AsaasSubscriptionsGet( $subscription_data->subscription->customer );
         if( !$subscriptionsGet ) {

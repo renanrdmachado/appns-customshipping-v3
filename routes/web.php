@@ -25,6 +25,7 @@ Route::get('/', function () {
 Route::get('/install', [BasicController::class, 'install']);
 Route::get('/dashboard', [BasicController::class, 'dashboard'])->middleware(['auth'])->name('dashboard');
 Route::get('/account/password', function () { return view('pages/account/password'); })->middleware(['auth'])->name('pass');
+Route::get('/account/delete', [AccountController::class, 'AccountDelete'])->middleware(['auth'])->name('delete');
 Route::post('/account/password', [AccountController::class, 'AccountPasswordUpdate'])->middleware(['auth'])->name('pass.update');
 
 // Account

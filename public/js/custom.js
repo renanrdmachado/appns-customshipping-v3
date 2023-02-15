@@ -33,10 +33,12 @@ MVL.subscriptionsNew = {
     
         refresh.done( function( res ){
             console.log( "done: ", res );
+            window.location.href = window.location.href;
             MVL.loading('hide');
         } );
         refresh.fail( function( res ){
             console.log( "fail: ", res );
+            window.location.href = window.location.href;
             MVL.loading('hide');
         } );
     },
@@ -66,10 +68,12 @@ MVL.subscriptionsRefresh = {
     
         refresh.done( function( res ){
             console.log( "done: ", res );
+            window.location.href = window.location.href;
             MVL.loading('hide');
         } );
         refresh.fail( function( res ){
             console.log( "fail: ", res );
+            window.location.href = window.location.href;
             MVL.loading('hide');
         } );
     },
@@ -101,6 +105,8 @@ MVL.zipcodes = {
 
         refresh.done( function( res ){
             console.log( "done: ", res );
+            $('.zipcodes-range-item.new:not(.hidden)').removeClass('new');
+
             MVL.loading('hide');
         } );
         refresh.fail( function( res ){
@@ -139,3 +145,40 @@ MVL.zipcodes = {
     }
 }
 MVL.zipcodes.init();
+
+MVL.account = {
+    cancel: function() {
+        if( confirm('Você irá perder todas as suas informações salvas neste APP. Deseja realmente REMOVER sua conta?') ) {
+            console.log("Deletando...");
+
+            var refresh = $.ajax({
+                url: '/account/delete',
+                type: 'GET',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+    
+            refresh.done( function( res ){
+                console.log( "done: ", res );
+                MVL.loading('hide');
+            } );
+            refresh.fail( function( res ){
+                console.log( "fail: ", res );
+                MVL.loading('hide');
+            } );
+
+            
+        } else {
+            console.log("Cancelou!");
+        }
+    },
+    init: function() {
+        $('.js-cancel-account').on( 'click' , function(e){
+            e.preventDefault();
+            MVL.account.cancel();
+        } );
+    }
+}
+
+MVL.account.init();
