@@ -10,8 +10,22 @@
 
 
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                
                 <div class="p-6 bg-white border-b border-gray-200">
-                    <p>Edite as faixas de CEP para sua loja!</p>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <p>Edite as faixas de CEP para sua loja!</p>
+                        </div>
+                        <div class="col-md-12 mt-2">
+                            <form class="js-shipping-import-xls" method="POST" enctype="multipart/form-data">
+                                <strong>Importar CSV</strong><br/>
+                                <small>*Ao importar os CEPs via CSV, todos os ceps cadastrados serão substituídos pelo CEPs do CSV.</small><br/>
+                                <input type="file" name="my-csv">
+                                <input type="submit" value="Enviar" class="btn btn-primary">
+                            </form>
+                        </div>
+                    </div>
+                    
                 </div>
 
                 <div class="p-6 bg-white border-gray-200">

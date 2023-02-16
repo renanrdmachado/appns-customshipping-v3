@@ -138,10 +138,40 @@ MVL.zipcodes = {
             e.preventDefault();
             MVL.zipcodes.save(MVL.zipcodes.container);
         });
+        $('.js-shipping-import-xls').on('submit' , function(e){
+            e.preventDefault();
+            var formData = new FormData(this);
+            MVL.zipcodes.importXLS( formData );
+        } );
 
     },
     init: function(){
         this.handle();
+    },
+    importXLS: function(file){
+        MVL.loading('show');
+        var importCsv = $.ajax({
+            url: '/shipping/import',
+            type: 'POST',
+            data: file,
+            contentType: false,
+            processData: false,
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+    
+        importCsv.done( function( res ){
+            console.log( "done: ", res );
+            window.location.href = window.location.href;
+            MVL.loading('hide');
+        } );
+        importCsv.fail( function( res ){
+            console.log( "fail: ", res );
+            MVL.loading('hide');
+        } );
+
+        console.log('APP feito');
     }
 }
 MVL.zipcodes.init();
@@ -151,7 +181,7 @@ MVL.account = {
         if( confirm('Você irá perder todas as suas informações salvas neste APP. Deseja realmente REMOVER sua conta?') ) {
             console.log("Deletando...");
 
-            var refresh = $.ajax({
+            var deleteAccount = $.ajax({
                 url: '/account/delete',
                 type: 'GET',
                 headers: {
@@ -159,11 +189,11 @@ MVL.account = {
                 }
             });
     
-            refresh.done( function( res ){
+            deleteAccount.done( function( res ){
                 console.log( "done: ", res );
                 MVL.loading('hide');
             } );
-            refresh.fail( function( res ){
+            deleteAccount.fail( function( res ){
                 console.log( "fail: ", res );
                 MVL.loading('hide');
             } );

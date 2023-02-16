@@ -10,6 +10,8 @@ use Carbon\Carbon;
 use Illuminate\Support\Str;
 use App\Models\AsaasSubscriptions;
 use App\Models\AppStore;
+use Maatwebsite\Excel\Concerns\ToModel;
+use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
 class AppShipping extends Model
 {
@@ -97,44 +99,73 @@ class AppShipping extends Model
 
         if (!$res)
             return false;
+        $rates = [];
 
-        foreach($res as $key=>$fd) {
-            
-            if (isset($fd->active) && $fd->active=="on") {
-                $min = $fd->min_days;
-                $max = $fd->max_days;
-    
-                
-                $min_delivery_date = Carbon::now()->addDays($min)->toIso8601String();
-                $max_delivery_date = Carbon::now()->addDays($max)->toIso8601String();
-    
-                $fd->price = str_replace(",", ".", $fd->price);
-    
-                //var_dump($data);
-    
-                $newkey = $key + 1;
-                $rates["rates"][] = array(
-                    "name"=> $fd->name,
-                    "code"=> 'fretefixo'.$newkey,
-                    "price"=> floatval(number_format($fd->price,2,".","") ),
-                    // "price"=> $fd->price,
-                    "price_merchant"=> 0,
-                    "currency"=> "BRL",
-                    "type"=> "ship",
-                    "min_delivery_date"=> $min_delivery_date,
-                    "max_delivery_date"=> $max_delivery_date,
-                    "reference"=> Str::slug($fd->name,'-')
-                );
-                $newkey=false;
-            }
+        $items = array_filter($res, function( $item ){
+            return trim($item->active) == "on";
+        });
+        
+        if( !$items )
+            return;
 
-           
-            
+        $items = array_values($items);
+        foreach($items as $key=>$fd) {            
+            $min = $fd->min_days;
+            $max = $fd->max_days;
+
+            $min_delivery_date = Carbon::now()->addDays($min)->toIso8601String();
+            $max_delivery_date = Carbon::now()->addDays($max)->toIso8601String();
+
+            $fd->price = str_replace(",", ".", $fd->price);
+
+            //var_dump($data);
+
+            $newkey = $key + 1;
+            $rates["rates"][] = array(
+                "name"=> $fd->name,
+                "code"=> 'fretefixo'.$newkey,
+                "price"=> floatval(number_format($fd->price,2,".","") ),
+                // "price"=> $fd->price,
+                "price_merchant"=> 0,
+                "currency"=> "BRL",
+                "type"=> "ship",
+                "min_delivery_date"=> $min_delivery_date,
+                "max_delivery_date"=> $max_delivery_date,
+                "reference"=> Str::slug($fd->name,'-')
+            );
+            $newkey=false; 
         }
     
         return $rates;
 
         // return $res;
+    }
+
+    public static function AppShippingImportCSV($file) {
+        // dd($file->path());
+        $cols = ["name","from","to","min_days","max_days","price","active"];
+        $csv = file($file->path());
+        // dd($csv);
+        $output = [];
+
+        foreach ($csv as $line_index => $line) {
+            if ($line_index > 0) { // I assume the the first line contains the column names.
+                $newLine = [];
+                $values = explode(';', $line);
+                foreach ($values as $col_index => $value) {
+                    if( isset($cols[$col_index]) ) {
+                        $newLine[$cols[$col_index]] = $value;
+                    }
+                }
+                $output[] = $newLine;
+            }
+        }
+
+        $json_output = $output;  
+        // dd($output);
+
+        AppShipping::AppShippingSave($output);
+        return true;
     }
     
 }

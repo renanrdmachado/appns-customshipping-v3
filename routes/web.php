@@ -39,4 +39,5 @@ Route::get('/shipping', [ShippingsController::class, 'index'])->middleware(['aut
 Route::post('/shipping', [ShippingsController::class, 'save'])->middleware(['auth'])->name('shipping');
 Route::get('/shipping/{id}', [ShippingsController::class, 'single'])->middleware(['auth'])->name('shipping.single');
 Route::post('/shipping/response', [ShippingsController::class, 'find']);
+Route::post('/shipping/import', [ShippingsController::class, 'importCSV']);
 require __DIR__.'/auth.php';

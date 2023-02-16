@@ -52,4 +52,8 @@ class ShippingsController extends Controller
 
         return $upsert;
     }
+
+    public static function importCSV(Request $request) {
+        $import = AppShipping::AppShippingImportCSV( $request->file('my-csv') );
+    }
 }
